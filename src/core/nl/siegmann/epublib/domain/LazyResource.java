@@ -45,13 +45,12 @@ public class LazyResource extends Resource {
     * If the size of the resource is known ahead of time we can use that to allocate
     * a matching byte[]. If this succeeds we can safely load the data.
     *
-    * If it fails we leave the data null for now and it will be lazy-loaded when
-    * it is accessed.
+    * If it fails we leave the data null for now and it will be lazy-loaded when it is accessed.
     *
-    * @param in
-    * @param fileName
-    * @param length
-    * @param href
+    * @param in the InputStream
+    * @param filename the file name
+    * @param length the length
+    * @param href the herf
     * @throws IOException
     */
    public LazyResource(InputStream in, String filename, int length, String href) throws IOException {

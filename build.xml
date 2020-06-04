@@ -64,6 +64,7 @@
          </fileset>    
          <fileset description="miscellanous" dir=".">
             <include name="README.md"/>
+            <include name="LICENSE"/>
          </fileset>              
       </zip>
    </target>
@@ -93,6 +94,7 @@
          </fileset>                      
          <fileset description="miscellanous" dir=".">
             <include name="README.md"/>
+            <include name="LICENSE"/>
             <include name="nbproject/**/*.*"/>
             <include name="build.xml"/>
          </fileset>
@@ -126,8 +128,7 @@
                notree="${javadoc.notree}" private="${javadoc.private}"
                source="${javac.source}" splitindex="${javadoc.splitindex}"
                use="${javadoc.use}" useexternalfile="true" version="${javadoc.version}"
-               windowtitle="${javadoc.windowtitle}" executable="${javadocEXE}" 
-               overview="${src.dir}/overview.html" windowTitle="DocJGenerator API">
+               overview="${src.dir}/overview.html" windowTitle="epublib API">
          <link offline="true" href="${j2seapi}"
                packagelistLoc="${javadocDir}"/>
          <classpath>

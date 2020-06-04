@@ -33,11 +33,10 @@ public class ResourcesLoader {
     * @param zipFile
     * @param defaultHtmlEncoding
     * @param lazyLoadedTypes
-    * @return
+    * @return the Resources
     * @throws IOException
     */
-   public static Resources loadResources(ZipFile zipFile, String defaultHtmlEncoding,
-      List<MediaType> lazyLoadedTypes) throws IOException {
+   public static Resources loadResources(ZipFile zipFile, String defaultHtmlEncoding, List<MediaType> lazyLoadedTypes) throws IOException {
 
       Resources result = new Resources();
       Enumeration<? extends ZipEntry> entries = zipFile.entries();
@@ -91,7 +90,7 @@ public class ResourcesLoader {
     *
     * @param zipInputStream
     * @param defaultHtmlEncoding
-    * @return
+    * @return the Resources
     * @throws IOException
     */
    public static Resources loadResources(ZipInputStream zipInputStream, String defaultHtmlEncoding) throws IOException {
@@ -139,7 +138,7 @@ public class ResourcesLoader {
     *
     * @param zipFile
     * @param defaultHtmlEncoding
-    * @return
+    * @return the Resources
     * @throws IOException
     */
    public static Resources loadResources(ZipFile zipFile, String defaultHtmlEncoding) throws IOException {

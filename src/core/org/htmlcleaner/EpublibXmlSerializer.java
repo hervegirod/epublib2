@@ -15,6 +15,7 @@ public class EpublibXmlSerializer extends SimpleXmlSerializer {
       this.outputEncoding = outputEncoding;
    }
 
+   @Override
    protected String escapeXml(String xmlContent) {
       return xmlContent;
    }

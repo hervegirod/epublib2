@@ -25,10 +25,10 @@ Licensed under a <a href="http://creativecommons.org/licenses/by/3.0/">Creative 
 ## Command line examples
 
 Set the author of an existing epub
-	java -jar epublib-3.0-SNAPSHOT.one-jar.jar --in input.epub --out result.epub --author Tester,Joe
+	java -jar epublib.jar --in input.epub --out result.epub --author Tester,Joe
 
 Set the cover image of an existing epub
-	java -jar epublib-3.0-SNAPSHOT.one-jar.jar --in input.epub --out result.epub --cover-image my_cover.jpg
+	java -jar epublib.jar --in input.epub --out result.epub --cover-image my_cover.jpg
 
 ## Creating an epub programmatically
 
