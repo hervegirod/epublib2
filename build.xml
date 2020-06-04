@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="epublib" default="default" basedir="."
+         xmlns:j2seproject1="http://www.netbeans.org/ns/j2se-project/1"
+         xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3">
+    <description>Builds, tests, and runs the project epublib.</description>
+    <import file="nbproject/build-impl.xml"/>
+   <!-- =================================================================== --> 
+   <!-- post NB init --> 
+   <!-- =================================================================== --> 
+   <target name="-post-init" depends="-init-project" > 
+      <!-- general properties definition --> 
+      <property name="archiveName" value="epublib"/> 
+      <property name="libs.dir" value="lib" /> 
+      <property name="oldlibs.dir" value="oldlib" /> 
+      <property name="src.dir" value="${src.core.dir}/.." /> 
+      <condition property="javadoc.exists">
+         <available file="${dist.javadoc.dir}" type="dir"/>
+      </condition>   
+   </target>
+   <!-- =================================================================== -->
+   <!-- Non NB targets -->
+   <!-- =================================================================== -->
+   <target description="fetch version" depends="-post-init" name="version">
+      <loadproperties srcFile="${src.core.dir}/nl/siegmann/epublib/resources/epublib.properties">
+         <filterchain>
+            <linecontains>
+               <contains value="version"/>
+            </linecontains>
+         </filterchain>
+      </loadproperties>
+   </target>
+   <!-- =================================================================== -->
+   <!-- zip files -->
+   <!-- =================================================================== -->
+   <!-- zip javadocs -->
+   <target depends="version, -post-init" name="-zipjavadoc-core" if="javadoc.exists">
+      <zip compress="true" defaultexcludes="true" zipfile="${dist.dir}/${archiveName}-docs-${version}.zip">
+         <fileset description="documentation" dir="${dist.javadoc.dir}">
+            <include name="**/*"/>
+         </fileset>
+      </zip>
+   </target> 
+  
+   
+   <!-- zip binaries -->
+   <target depends="version, -post-init, -zipjavadoc-core"
+           description="create javadoc zip files" name="zipjavadoc"/>
+   <target depends="version, -post-init" name="-zipbinaries" >
+      <!-- zip binary files -->
+      <zip compress="true" defaultexcludes="true" zipfile="${dist.dir}/${archiveName}-bin-${version}.zip">
+         <fileset description="distrib" dir="${dist.dir}">
+            <include name="**/*.jar"/>
+         </fileset>
+         <fileset description="libs" dir=".">
+            <include name="${libs.dir}/**/*.*"/>
+         </fileset>    
+         <fileset description="miscellanous" dir=".">
+            <include name="README.md"/>
+         </fileset>              
+      </zip>
+   </target>
+   
+   <!-- zip sources -->
+   <target depends="version, -post-init" name="-zipsources">
+      <!-- zip source files -->
+      <zip compress="true" defaultexcludes="true" zipfile="${dist.dir}/${archiveName}-src-${version}.zip">
+         <fileset description="source directory" dir="${src.dir}/..">
+            <include name="src/**/*.*"/>
+         </fileset>
+         <fileset description="binaries" dir="${dist.dir}">
+            <include name="epublib.jar"/>
+            <include name="epublibTools.jar"/>            
+         </fileset>
+         <fileset description="samples" dir=".">
+            <include name="samples/**/*.*"/>
+         </fileset>           
+         <fileset description="libs" dir=".">
+            <include name="${libs.dir}/**/*.*"/>
+         </fileset>
+         <fileset description="oldlibs" dir=".">
+            <include name="${oldlibs.dir}/**/*.*"/>
+         </fileset>    
+         <fileset description="tools" dir=".">
+            <include name="tools/**/*.*"/>
+         </fileset>                      
+         <fileset description="miscellanous" dir=".">
+            <include name="README.md"/>
+            <include name="nbproject/**/*.*"/>
+            <include name="build.xml"/>
+         </fileset>
+      </zip>
+   </target>
+   
+   <!-- zip tests sources -->
+   <target depends="version, -post-init" name="-ziptestsources"> 
+      <!-- zip tests sources --> 
+      <zip compress="true" defaultexcludes="true" zipfile="${dist.dir}/${archiveName}-tests-${version}.zip"> 
+         <fileset description="test source files" dir="${test.src.dir}/.."> 
+            <include name="test/**/*"/> 
+         </fileset> 
+      </zip> 
+   </target> 
+   <target depends="version, -post-init, -ziptestsources, -zipsources, -zipbinaries"
+           description="create zip files" name="zip"> 
+   </target> 
+   
+   <!-- =================================================================== -->
+   <!-- NB overwrite targets : javadocs                                     -->
+   <!-- =================================================================== -->
+
+   <target depends="-javadoc-core" name="-javadoc-build" />
+   
+   <target depends="init, -post-init" name="-javadoc-core">
+      <!-- Javadoc -->
+      <javadoc author="${javadoc.author}" charset="UTF-8" destdir="${dist.javadoc.dir}"
+               docencoding="UTF-8" encoding="${javadoc.encoding.used}" failonerror="true"
+               noindex="${javadoc.noindex}" nonavbar="${javadoc.nonavbar}"
+               notree="${javadoc.notree}" private="${javadoc.private}"
+               source="${javac.source}" splitindex="${javadoc.splitindex}"
+               use="${javadoc.use}" useexternalfile="true" version="${javadoc.version}"
+               windowtitle="${javadoc.windowtitle}" executable="${javadocEXE}" 
+               overview="${src.dir}/overview.html" windowTitle="DocJGenerator API">
+         <link offline="true" href="${j2seapi}"
+               packagelistLoc="${javadocDir}"/>
+         <classpath>
+            <path path="${javac.classpath}"/>
+         </classpath>
+         <!-- the Xdoclint argument avoid to get javadoc errors when the documentation format is not compliant for HTML 4, which was the case before
+         Java 8. It would also not be a good idea, because empty tags like br are very useful -->
+         <arg line="-Xdoclint:none"/>
+         <fileset dir="${src.dir}" defaultexcludes="yes">
+            <include name="core/**/*.java"/>
+            <include name="viewer/**/*.java"/>
+         </fileset>
+         <group title="Core API">
+            <package name="nl.siegmann.epublib.bookprocessor*" />
+            <package name="nl.siegmann.epublib.domain*" />
+            <package name="nl.siegmann.epublib.epub*" />
+            <package name="nl.siegmann.epublib.fileset*" />
+            <package name="nl.siegmann.epublib.service*" />
+            <package name="nl.siegmann.epublib.util*" />
+            <package name="org.girod.epublib*" />
+            <package name="org.htmlcleaner*" />
+         </group>       
+         <group title="Viewer API">
+            <package name="nl.siegmann.epublib.tools*" />
+            <package name="nl.siegmann.epublib.viewer*" />
+         </group>                
+         <doctitle><![CDATA[<h1>epublib</h1>]]></doctitle>
+         <bottom>
+            <![CDATA[<i>Documentation and source under the LGPL licence</i>]]>
+         </bottom>
+      </javadoc>
+   </target>      
+   
+   <!-- =================================================================== --> 
+   <!-- NB overwrite targets : jar --> 
+   <!-- =================================================================== --> 
+   <target depends="init,compile,-pre-jar,-do-jar-without-manifest,-post-jar" description="Build JAR." name="jar"/> 
+   <target name="-do-jar-without-manifest" 
+           depends="-core, -viewer" />
+   
+   <target name="-core" depends="init,compile,-pre-pre-jar,-pre-jar" > 
+      <jar description="jar binary file" compress="true" 
+           jarfile="${dist.dir}/epublib.jar"> 
+         <fileset defaultexcludes="yes" dir="${build.classes.dir}" > 
+            <include name="org/**/*.class"/>       
+            <include name="nl/siegmann/**/*.class"/>          
+            <include name="nl/siegmann/**/*.properties"/>   
+            <exclude name="nl/siegmann/epublib/tools/**/*.*" />                   
+            <exclude name="nl/siegmann/epublib/viewer/**/*.*" />                               
+         </fileset> 
+      </jar>     
+   </target>
+   
+   <target name="-viewer" depends="init,compile,-pre-pre-jar,-pre-jar" > 
+      <jar description="jar binary file" compress="true" 
+           jarfile="${dist.dir}/epublibViewer.jar" manifest="${src.viewer.dir}/manifest.mf"> 
+         <fileset defaultexcludes="yes" dir="${build.classes.dir}" > 
+            <include name="nl/siegmann/epublib/tools/**/*.class" />     
+            <include name="nl/siegmann/epublib/viewer/book/*.*" />                   
+            <include name="nl/siegmann/epublib/viewer/**/*.class" />         
+            <include name="nl/siegmann/epublib/viewer/**/*.png" /> 
+            <include name="nl/siegmann/epublib/viewer/**/*.epub" />
+            <include name="nl/siegmann/epublib/viewer/book/*.*" />                           
+         </fileset> 
+      </jar>     
+   </target>   
+</project>
