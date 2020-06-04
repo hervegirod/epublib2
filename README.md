@@ -6,9 +6,7 @@ Contrary to the original library, this library is not ready-to-use on Android de
 of the original library (necessary when using the library on Android) have been removed.
 
 ## Why not having just forked the original library?
-The structure of the project has too many changes compared to the original project, and its reason are because it does not answer to the 
-same kind of requirements than the original library, therefore I don't yhink that it would be valid for example to merge changes made in 
-this project to the original project.
+The structure of the project has too many changes compared to the original project, and the reason because it does not answer to the same kind of requirements than the original library, therefore I don't yhink that it would be valid for example to merge changes made in  this project to the original project.
 
 ## Changes compared to the original
 * Removed dependency to jazzlib (useful only on Android platforms)
