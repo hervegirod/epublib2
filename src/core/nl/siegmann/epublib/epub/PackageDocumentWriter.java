@@ -23,7 +23,7 @@ import org.girod.epublib.xml.XmlSerializer;
  * Writes the opf package document as defined by namespace http://www.idpf.org/2007/opf
  *
  * @author paul
- *
+ * @version 1.1
  */
 public class PackageDocumentWriter extends PackageDocumentBase {
 
@@ -42,12 +42,11 @@ public class PackageDocumentWriter extends PackageDocumentBase {
          writeSpine(book, epubWriter, serializer);
          writeGuide(book, epubWriter, serializer);
 
-         serializer.endTag(NAMESPACE_OPF, OPFTags.packageTag);
+         serializer.endTag(NAMESPACE_OPF, OPFTags.packageTag, true);
          serializer.endDocument();
          serializer.flush();
       } catch (IOException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
    }
 
@@ -75,7 +74,7 @@ public class PackageDocumentWriter extends PackageDocumentBase {
          serializer.endTag(NAMESPACE_OPF, OPFTags.itemref);
       }
       writeSpineItems(book.getSpine(), serializer);
-      serializer.endTag(NAMESPACE_OPF, OPFTags.spine);
+      serializer.endTag(NAMESPACE_OPF, OPFTags.spine, true);
    }
 
    private static void writeManifest(Book book, EpubWriter epubWriter, XmlSerializer serializer) throws IllegalArgumentException, IllegalStateException, IOException {
@@ -91,12 +90,11 @@ public class PackageDocumentWriter extends PackageDocumentBase {
       for (Resource resource : getAllResourcesSortById(book)) {
          writeItem(book, resource, serializer);
       }
-
-      serializer.endTag(NAMESPACE_OPF, OPFTags.manifest);
+      serializer.endTag(NAMESPACE_OPF, OPFTags.manifest, true);
    }
 
    private static List<Resource> getAllResourcesSortById(Book book) {
-      List<Resource> allResources = new ArrayList<Resource>(book.getResources().getAll());
+      List<Resource> allResources = new ArrayList<>(book.getResources().getAll());
       Collections.sort(allResources, new Comparator<Resource>() {
 
          @Override
@@ -124,15 +122,15 @@ public class PackageDocumentWriter extends PackageDocumentBase {
          return;
       }
       if (StringUtil.isEmpty(resource.getId())) {
-         System.err.println("resource id must not be empty (href: " + resource.getHref() + ", mediatype:" + resource.getMediaType() + ")");
+         ErrorManager.error("resource id must not be empty (href: " + resource.getHref() + ", mediatype:" + resource.getMediaType() + ")");
          return;
       }
       if (StringUtil.isEmpty(resource.getHref())) {
-         System.err.println("resource href must not be empty (id: " + resource.getId() + ", mediatype:" + resource.getMediaType() + ")");
+         ErrorManager.error("resource href must not be empty (id: " + resource.getId() + ", mediatype:" + resource.getMediaType() + ")");
          return;
       }
       if (resource.getMediaType() == null) {
-         System.err.println("resource mediatype must not be empty (id: " + resource.getId() + ", href:" + resource.getHref() + ")");
+         ErrorManager.error("resource mediatype must not be empty (id: " + resource.getId() + ", href:" + resource.getHref() + ")");
          return;
       }
       serializer.startTag(NAMESPACE_OPF, OPFTags.item);
@@ -166,7 +164,7 @@ public class PackageDocumentWriter extends PackageDocumentBase {
       for (GuideReference reference : book.getGuide().getReferences()) {
          writeGuideReference(reference, serializer);
       }
-      serializer.endTag(NAMESPACE_OPF, OPFTags.guide);
+      serializer.endTag(NAMESPACE_OPF, OPFTags.guide, true);
    }
 
    private static void ensureCoverPageGuideReferenceWritten(Guide guide,

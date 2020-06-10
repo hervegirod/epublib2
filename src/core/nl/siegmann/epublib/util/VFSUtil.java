@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import nl.siegmann.epublib.domain.MediaType;
 import nl.siegmann.epublib.domain.Resource;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.service.MediatypeService;
 
 import org.apache.commons.io.IOUtils;
@@ -19,7 +20,7 @@ import org.apache.commons.vfs.VFS;
  * Utitilies for making working with apache commons VFS easier.
  *
  * @author paul
- *
+ * @version 1.1
  */
 public class VFSUtil {
    public static Resource createResource(FileObject rootDir, FileObject file, String inputEncoding) throws IOException {
@@ -54,7 +55,7 @@ public class VFSUtil {
          try {
             result = VFS.getManager().resolveFile(new File("."), inputLocation);
          } catch (Exception e1) {
-            e.printStackTrace();
+            ErrorManager.error(e);
          }
       }
       return result;
@@ -75,7 +76,7 @@ public class VFSUtil {
          try {
             result = new FileInputStream(inputLocation);
          } catch (FileNotFoundException e1) {
-            e.printStackTrace();
+            ErrorManager.error(e);
          }
       }
       return result;

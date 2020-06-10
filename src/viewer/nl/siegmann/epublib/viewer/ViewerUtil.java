@@ -5,6 +5,7 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import nl.siegmann.epublib.epub.ErrorManager;
 
 public class ViewerUtil {
 
@@ -35,7 +36,7 @@ public class ViewerUtil {
          Image image = ImageIO.read(ViewerUtil.class.getResourceAsStream(fullIconPath));
          result = new ImageIcon(image);
       } catch (Exception e) {
-         System.err.println("Icon \'" + fullIconPath + "\' not found");
+         ErrorManager.error("Icon \'" + fullIconPath + "\' not found");
       }
       return result;
    }

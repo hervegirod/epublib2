@@ -9,13 +9,9 @@ import nl.siegmann.epublib.util.StringUtil;
  * @see nl.siegmann.epublib.domain.Guide
  *
  * @author paul
- *
+ * @version 1.1
  */
 public class GuideReference extends TitledResourceReference implements Serializable {
-
-   /**
-    *
-    */
    private static final long serialVersionUID = -316179702440631834L;
 
    /**

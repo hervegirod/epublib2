@@ -23,16 +23,15 @@ import org.w3c.dom.NodeList;
  * In its own separate class because the PackageDocumentReader became a bit large and unwieldy.
  *
  * @author paul
- *
+ * @version 1.1
  */
-// package
 class PackageDocumentMetadataReader extends PackageDocumentBase {
 
    public static Metadata readMetadata(Document packageDocument) {
       Metadata result = new Metadata();
       Element metadataElement = DOMUtil.getFirstElementByTagNameNS(packageDocument.getDocumentElement(), NAMESPACE_OPF, OPFTags.metadata);
       if (metadataElement == null) {
-         System.err.println("Package does not contain element " + OPFTags.metadata);
+         ErrorManager.error("Package does not contain element " + OPFTags.metadata);
          return result;
       }
       result.setTitles(DOMUtil.getElementsTextChild(metadataElement, NAMESPACE_DUBLIN_CORE, DCTags.title));
@@ -141,7 +140,7 @@ class PackageDocumentMetadataReader extends PackageDocumentBase {
             date = new Date(DOMUtil.getTextChildrenContent(dateElement), dateElement.getAttributeNS(NAMESPACE_OPF, OPFAttributes.event));
             result.add(date);
          } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            ErrorManager.error(e);
          }
       }
       return result;
@@ -167,7 +166,7 @@ class PackageDocumentMetadataReader extends PackageDocumentBase {
    private static List<Identifier> readIdentifiers(Element metadataElement) {
       NodeList identifierElements = metadataElement.getElementsByTagNameNS(NAMESPACE_DUBLIN_CORE, DCTags.identifier);
       if (identifierElements.getLength() == 0) {
-         System.err.println("Package does not contain element " + DCTags.identifier);
+         ErrorManager.error("Package does not contain element " + DCTags.identifier);
          return new ArrayList<Identifier>();
       }
       String bookIdId = getBookIdId(metadataElement.getOwnerDocument());

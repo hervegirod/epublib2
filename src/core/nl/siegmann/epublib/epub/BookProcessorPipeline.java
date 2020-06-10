@@ -13,7 +13,7 @@ import nl.siegmann.epublib.domain.Book;
  * Cleans up the XHTML.
  *
  * @author paul.siegmann
- *
+ * @version 1.1
  */
 public class BookProcessorPipeline implements BookProcessor {
    private List<BookProcessor> bookProcessors;
@@ -35,7 +35,7 @@ public class BookProcessorPipeline implements BookProcessor {
          try {
             book = bookProcessor.processBook(book);
          } catch (Exception e) {
-            e.printStackTrace();
+            ErrorManager.error(e);
          }
       }
       return book;

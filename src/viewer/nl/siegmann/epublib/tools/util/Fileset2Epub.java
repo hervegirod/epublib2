@@ -17,6 +17,7 @@ import nl.siegmann.epublib.epub.BookProcessor;
 import nl.siegmann.epublib.epub.BookProcessorPipeline;
 import nl.siegmann.epublib.epub.EpubReader;
 import nl.siegmann.epublib.epub.EpubWriter;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.fileset.FilesetBookCreator;
 
 import nl.siegmann.epublib.util.Constants;
@@ -30,7 +31,7 @@ import org.apache.commons.vfs.VFS;
 
 /**
  *
- * @since 1.0
+ * @version 1.1
  */
 public class Fileset2Epub {
 
@@ -144,7 +145,7 @@ public class Fileset2Epub {
             bookProcessor = (BookProcessor) Class.forName(bookProcessorName).newInstance();
             result.add(bookProcessor);
          } catch (Exception e) {
-            e.printStackTrace();
+            ErrorManager.error(e);
          }
       }
       return result;

@@ -15,6 +15,7 @@ import nl.siegmann.epublib.domain.Metadata;
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.domain.Resources;
 import nl.siegmann.epublib.epub.BookProcessor;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.service.MediatypeService;
 import nl.siegmann.epublib.util.CollectionUtil;
 import nl.siegmann.epublib.util.ResourceUtil;
@@ -32,7 +33,7 @@ import org.w3c.dom.NodeList;
  * will overwrite any "cover.jpg" or "cover.html" that are already there.
  *
  * @author paul
- * @since 1.0
+ * @version 1.1
  */
 public class CoverpageBookProcessor implements BookProcessor {
 
@@ -133,7 +134,7 @@ public class CoverpageBookProcessor implements BookProcessor {
             }
          }
       } catch (Exception e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       return null;
    }

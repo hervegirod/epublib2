@@ -12,7 +12,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-
 import nl.siegmann.epublib.util.Constants;
 import org.girod.epublib.xml.XmlPullParserFactory;
 import org.girod.epublib.xml.XmlSerializer;
@@ -24,7 +23,7 @@ import org.xml.sax.SAXException;
  * Various low-level support methods for reading/writing epubs.
  *
  * @author paul.siegmann
- *
+ * @version 1.1
  */
 public class EpubProcessorSupport {
 
@@ -75,7 +74,7 @@ public class EpubProcessorSupport {
          result = factory.newSerializer();
          result.setOutput(out);
       } catch (Exception e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       return result;
    }
@@ -107,7 +106,7 @@ public class EpubProcessorSupport {
          result = documentBuilderFactory.newDocumentBuilder();
          result.setEntityResolver(getEntityResolver());
       } catch (ParserConfigurationException e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       return result;
    }

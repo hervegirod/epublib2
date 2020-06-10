@@ -7,6 +7,8 @@ import java.io.Writer;
 
 /**
  * Implementation of XmlSerializer interface from XmlPull V1 API.
+ *
+ * @version 1.1
  */
 public class XmlSerializerImpl implements XmlSerializer {
    protected final static String XML_URI = "http://www.w3.org/XML/1998/namespace";
@@ -371,6 +373,7 @@ public class XmlSerializerImpl implements XmlSerializer {
       if (startTagIncomplete) {
          closeStartTag();
       }
+      out.write("\n");
       seenBracket = seenBracketBracket = false;
       ++depth;
       if (doIndent && depth > 0 && seenTag) {
@@ -527,23 +530,24 @@ public class XmlSerializerImpl implements XmlSerializer {
    }
 
    @Override
-   public XmlSerializer endTag(String namespace, String name) throws IOException {
+   public XmlSerializer endTag(String namespace, String name, boolean newLine) throws IOException {
       seenBracket = seenBracketBracket = false;
       if (namespace != null) {
          namespace = namespace.intern();
       }
 
       if (namespace != elNamespace[depth]) {
-         throw new IllegalArgumentException(
-            "expected namespace " + elNamespace[depth] + " and not " + namespace);
+         throw new IllegalArgumentException("expected namespace " + elNamespace[depth] + " and not " + namespace);
       }
       if (name == null) {
          throw new IllegalArgumentException("end tag name can not be null");
       }
       String startTagName = elName[depth];
       if ((!name.equals(startTagName)) || (name != startTagName)) {
-         throw new IllegalArgumentException(
-            "expected element name " + elName[depth] + " and not " + name);
+         throw new IllegalArgumentException("expected element name " + elName[depth] + " and not " + name);
+      }
+      if (newLine) {
+         out.write("\n");
       }
       if (startTagIncomplete) {
          writeNamespaceDeclarations();

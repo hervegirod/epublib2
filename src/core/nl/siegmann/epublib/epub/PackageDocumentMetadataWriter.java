@@ -98,7 +98,7 @@ public class PackageDocumentMetadataWriter extends PackageDocumentBase {
       serializer.attribute(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.content, Constants.EPUBLIB_GENERATOR_NAME);
       serializer.endTag(NAMESPACE_OPF, OPFTags.meta);
 
-      serializer.endTag(NAMESPACE_OPF, OPFTags.metadata);
+      serializer.endTag(NAMESPACE_OPF, OPFTags.metadata, true);
    }
 
    private static void writeSimpleMetdataElements(String tagName, List<String> values, XmlSerializer serializer) throws IllegalArgumentException, IllegalStateException, IOException {

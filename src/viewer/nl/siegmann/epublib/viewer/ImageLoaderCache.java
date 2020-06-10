@@ -15,6 +15,7 @@ import javax.swing.text.html.HTMLDocument;
 import nl.siegmann.epublib.viewer.browsersupport.Navigator;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.util.CollectionUtil;
 import nl.siegmann.epublib.util.StringUtil;
 
@@ -27,7 +28,7 @@ import nl.siegmann.epublib.util.StringUtil;
  * Can be shared by multiple documents but can only be <em>used</em> by one document at the time because of the currentFolder issue.
  *
  * @author paul
- * @version 1.0
+ * @version 1.1
  */
 class ImageLoaderCache extends Dictionary<String, Image> {
    public static final String IMAGE_URL_PREFIX = "http:/";
@@ -66,7 +67,7 @@ class ImageLoaderCache extends Dictionary<String, Image> {
       try {
          document.setBase(new URL(ImageLoaderCache.IMAGE_URL_PREFIX));
       } catch (MalformedURLException e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       setContextResource(navigator.getCurrentResource());
       document.getDocumentProperties().put("imageCache", this);
@@ -92,7 +93,7 @@ class ImageLoaderCache extends Dictionary<String, Image> {
       try {
          result = ImageIO.read(imageResource.getInputStream());
       } catch (IOException e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       return result;
    }

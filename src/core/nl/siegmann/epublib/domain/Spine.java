@@ -14,13 +14,9 @@ import nl.siegmann.epublib.util.StringUtil;
  * @see nl.siegmann.epublib.domain.TableOfContents
  *
  * @author paul
- *
+ * @since 1.1
  */
 public class Spine implements Serializable {
-
-   /**
-    *
-    */
    private static final long serialVersionUID = 3878483958947357246L;
    private Resource tocResource;
    private List<SpineReference> spineReferences;
@@ -43,7 +39,7 @@ public class Spine implements Serializable {
    }
 
    public static List<SpineReference> createSpineReferences(Collection<Resource> resources) {
-      List<SpineReference> result = new ArrayList<SpineReference>(resources.size());
+      List<SpineReference> result = new ArrayList<>(resources.size());
       for (Resource resource : resources) {
          result.add(new SpineReference(resource));
       }
@@ -102,7 +98,7 @@ public class Spine implements Serializable {
     */
    public SpineReference addSpineReference(SpineReference spineReference) {
       if (spineReferences == null) {
-         this.spineReferences = new ArrayList<SpineReference>();
+         this.spineReferences = new ArrayList<>();
       }
       spineReferences.add(spineReference);
       return spineReference;
@@ -111,6 +107,7 @@ public class Spine implements Serializable {
    /**
     * Adds the given resource to the spine references and returns it.
     *
+    * @param resource the resource
     * @return the given spineReference
     */
    public SpineReference addResource(Resource resource) {
@@ -164,8 +161,8 @@ public class Spine implements Serializable {
    /**
     * The first position within the spine of a resource with the given href.
     *
+    * @param resourceHref the resource href
     * @return something &lt; 0 if not found.
-    *
     */
    public int getResourceIndex(String resourceHref) {
       int result = -1;

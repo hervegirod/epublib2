@@ -23,7 +23,7 @@ import org.w3c.dom.Element;
  * Reads an epub file.
  *
  * @author paul
- *
+ * @version 1.1
  */
 public class EpubReader {
    private BookProcessor bookProcessor = BookProcessor.IDENTITY_BOOKPROCESSOR;
@@ -121,7 +121,7 @@ public class EpubReader {
       try {
          PackageDocumentReader.read(packageResource, this, book, resources);
       } catch (Exception e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       return packageResource;
    }
@@ -139,7 +139,7 @@ public class EpubReader {
          Element rootFileElement = (Element) ((Element) document.getDocumentElement().getElementsByTagName("rootfiles").item(0)).getElementsByTagName("rootfile").item(0);
          result = rootFileElement.getAttribute("full-path");
       } catch (Exception e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       if (StringUtil.isEmpty(result)) {
          result = defaultResult;

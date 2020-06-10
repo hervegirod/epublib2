@@ -23,6 +23,7 @@ import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.epub.BookProcessor;
 import nl.siegmann.epublib.epub.EpubProcessorSupport;
 
+import nl.siegmann.epublib.epub.ErrorManager;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -60,7 +61,6 @@ public class XslBookProcessor extends HtmlBookProcessor implements BookProcessor
          try {
             transformer.transform(htmlSource, streamResult);
          } catch (TransformerException e) {
-            e.printStackTrace();
             throw new IOException(e);
          }
          result = out.toByteArray();

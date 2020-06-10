@@ -7,9 +7,6 @@ import nl.siegmann.epublib.util.StringUtil;
 
 public class TitledResourceReference extends ResourceReference implements Serializable {
 
-   /**
-    *
-    */
    private static final long serialVersionUID = 3918155020095190080L;
    private String fragmentId;
    private String title;

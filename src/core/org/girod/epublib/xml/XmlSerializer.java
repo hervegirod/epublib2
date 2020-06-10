@@ -6,7 +6,7 @@ import java.io.Writer;
 
 /**
  *
- * @author Herve
+ * @since 1.1
  */
 public interface XmlSerializer {
 
@@ -32,7 +32,11 @@ public interface XmlSerializer {
 
    public XmlSerializer attribute(String string, String string1, String string2) throws IOException, IllegalArgumentException, IllegalStateException;
 
-   public XmlSerializer endTag(String string, String string1) throws IOException, IllegalArgumentException, IllegalStateException;
+   public XmlSerializer endTag(String string, String string1, boolean newLine) throws IOException, IllegalArgumentException, IllegalStateException;
+
+   public default XmlSerializer endTag(String string, String string1) throws IOException, IllegalArgumentException, IllegalStateException {
+      return endTag(string, string1, false);
+   }
 
    public XmlSerializer text(String string) throws IOException, IllegalArgumentException, IllegalStateException;
 

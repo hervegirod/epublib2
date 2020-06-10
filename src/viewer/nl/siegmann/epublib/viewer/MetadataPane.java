@@ -22,10 +22,11 @@ import nl.siegmann.epublib.viewer.browsersupport.Navigator;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Metadata;
 import nl.siegmann.epublib.domain.Resource;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.util.StringUtil;
 
 /**
- * @version 1.0
+ * @version 1.1
  */
 public class MetadataPane extends JPanel implements NavigationEventListener {
    private static final long serialVersionUID = -2810193923996466948L;
@@ -66,7 +67,7 @@ public class MetadataPane extends JPanel implements NavigationEventListener {
       try {
          Image image = ImageIO.read(coverImageResource.getInputStream());
          if (image == null) {
-            System.err.println("Unable to load cover image from book");
+            ErrorManager.error("Unable to load cover image from book");
             return;
          }
          image = image.getScaledInstance(200, -1, Image.SCALE_SMOOTH);
@@ -74,12 +75,12 @@ public class MetadataPane extends JPanel implements NavigationEventListener {
 //			label.setSize(100, 100);
          contentPanel.add(label, BorderLayout.NORTH);
       } catch (IOException e) {
-         System.err.println("Unable to load cover image from book");
+         ErrorManager.error("Unable to load cover image from book");
       }
    }
 
    private Object[][] createTableData(Metadata metadata) {
-      List<String[]> result = new ArrayList<String[]>();
+      List<String[]> result = new ArrayList<>();
       addStrings(metadata.getIdentifiers(), "Identifier", result);
       addStrings(metadata.getTitles(), "Title", result);
       addStrings(metadata.getAuthors(), "Author", result);

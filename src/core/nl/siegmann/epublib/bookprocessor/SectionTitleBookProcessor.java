@@ -11,12 +11,13 @@ import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.domain.TOCReference;
 import nl.siegmann.epublib.epub.BookProcessor;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.util.StringUtil;
 import org.xml.sax.InputSource;
 
 /**
  *
- * @version 1.0
+ * @version 1.1
  */
 public class SectionTitleBookProcessor implements BookProcessor {
 
@@ -37,10 +38,10 @@ public class SectionTitleBookProcessor implements BookProcessor {
             tocReference.setTitle(title);
          } catch (XPathExpressionException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            ErrorManager.error(e);
          } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            ErrorManager.error(e);
          }
       }
    }

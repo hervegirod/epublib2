@@ -6,13 +6,14 @@ import nl.siegmann.epublib.util.Constants;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.epub.BookProcessor;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.service.MediatypeService;
 
 /**
  * Helper class for BookProcessors that only manipulate html type resources.
  *
  * @author paul
- *
+ * @version 1.1
  */
 public abstract class HtmlBookProcessor implements BookProcessor {
    public static final String OUTPUT_ENCODING = "UTF-8";
@@ -26,7 +27,7 @@ public abstract class HtmlBookProcessor implements BookProcessor {
          try {
             cleanupResource(resource, book);
          } catch (IOException e) {
-            e.printStackTrace();
+            ErrorManager.error(e);
          }
       }
       return book;

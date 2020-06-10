@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.service.MediatypeService;
 import nl.siegmann.epublib.util.StringUtil;
 
@@ -18,7 +19,7 @@ import nl.siegmann.epublib.util.StringUtil;
  * A searchindex for searching through a book.
  *
  * @author paul.siegmann
- * @version 1.0
+ * @version 1.1
  */
 public class SearchIndex {
    public static int NBSP = 0x00A0;
@@ -108,7 +109,7 @@ public class SearchIndex {
       try {
          result = getSearchContent(resource.getReader());
       } catch (IOException e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       return result;
    }

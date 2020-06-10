@@ -17,6 +17,7 @@ import nl.siegmann.epublib.viewer.browsersupport.NavigationEventListener;
 import nl.siegmann.epublib.viewer.browsersupport.Navigator;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.service.MediatypeService;
 
 import org.apache.commons.io.IOUtils;
@@ -27,7 +28,7 @@ import org.apache.commons.io.IOUtils;
  * Between books the init(Book) function needs to be called in order for images to appear correctly.
  *
  * @author paul.siegmann
- *
+ * @version 1.1
  */
 public class HTMLDocumentFactory implements NavigationEventListener {
 
@@ -163,7 +164,7 @@ public class HTMLDocumentFactory implements NavigationEventListener {
          parserCallback.flush();
          result = document;
       } catch (Exception e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       return result;
    }
@@ -192,7 +193,7 @@ public class HTMLDocumentFactory implements NavigationEventListener {
          try {
             Thread.sleep(DOCUMENT_CACHE_INDEXER_WAIT_TIME);
          } catch (InterruptedException e) {
-            e.printStackTrace();
+            ErrorManager.error(e);
          }
          addAllDocumentsToCache(book);
       }

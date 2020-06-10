@@ -121,7 +121,7 @@ public class ResourcesLoader {
          //see <a href="https://github.com/psiegman/epublib/issues/122">Issue #122 Infinite loop</a>.
          //when reading a file that is not a real zip archive or a zero length file, zipInputStream.getNextEntry()
          //throws an exception and does not advance, so loadResources enters an infinite loop
-         System.err.println("Invalid or damaged zip file.");
+         ErrorManager.error("Invalid or damaged zip file.");
          try {
             zipInputStream.closeEntry();
          } catch (Exception ignored) {

@@ -28,6 +28,7 @@ import nl.siegmann.epublib.viewer.browsersupport.NavigationEventListener;
 import nl.siegmann.epublib.viewer.browsersupport.Navigator;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.util.Constants;
 import nl.siegmann.epublib.tools.util.DesktopUtil;
 import nl.siegmann.epublib.util.StringUtil;
@@ -35,7 +36,7 @@ import nl.siegmann.epublib.util.StringUtil;
 /**
  * Displays a page
  *
- * @version 1.0
+ * @version 1.1
  */
 public class ContentPane extends JPanel implements NavigationEventListener,
    HyperlinkListener {
@@ -167,7 +168,7 @@ public class ContentPane extends JPanel implements NavigationEventListener,
          rectangle.height = visibleRectangle.height;
          editorPane.scrollRectToVisible(rectangle);
       } catch (BadLocationException e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
    }
 
@@ -247,7 +248,7 @@ public class ContentPane extends JPanel implements NavigationEventListener,
          editorPane.setDocument(document);
          scrollToCurrentPosition(sectionPos);
       } catch (Exception e) {
-         System.err.println("When reading resource " + resource.getId() + "(" + resource.getHref() + ") :" + e.getMessage());
+         ErrorManager.error("When reading resource " + resource.getId() + "(" + resource.getHref() + ") :" + e.getMessage());
       }
    }
 
@@ -276,7 +277,7 @@ public class ContentPane extends JPanel implements NavigationEventListener,
             DesktopUtil.launchBrowser(event.getURL());
             return;
          } catch (DesktopUtil.BrowserLaunchException ex) {
-            System.err.println("Couldn't launch system web browser.");
+            ErrorManager.error("Couldn't launch system web browser.");
          }
       }
       String resourceHref = calculateTargetHref(event.getURL());
@@ -287,7 +288,7 @@ public class ContentPane extends JPanel implements NavigationEventListener,
 
       Resource resource = navigator.getBook().getResources().getByHref(resourceHref);
       if (resource == null) {
-         System.err.println("Resource with url " + resourceHref + " not found");
+         ErrorManager.error("Resource with url " + resourceHref + " not found");
       } else {
          navigator.gotoResource(resource, this);
       }
@@ -332,7 +333,7 @@ public class ContentPane extends JPanel implements NavigationEventListener,
       try {
          resourceHref = URLDecoder.decode(resourceHref, Constants.CHARACTER_ENCODING);
       } catch (UnsupportedEncodingException e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       resourceHref = resourceHref.substring(ImageLoaderCache.IMAGE_URL_PREFIX.length());
 

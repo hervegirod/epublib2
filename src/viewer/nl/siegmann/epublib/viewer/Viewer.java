@@ -32,11 +32,12 @@ import nl.siegmann.epublib.epub.BookProcessor;
 import nl.siegmann.epublib.epub.BookProcessorPipeline;
 import nl.siegmann.epublib.epub.EpubReader;
 import nl.siegmann.epublib.epub.EpubWriter;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.util.StringUtil;
 
 /**
  *
- * @version 1.0
+ * @version 1.1
  */
 public class Viewer {
    private final JFrame mainWindow;
@@ -55,7 +56,7 @@ public class Viewer {
          book = (new EpubReader()).readEpub(bookStream);
          gotoBook(book);
       } catch (IOException e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
    }
 
@@ -309,7 +310,7 @@ public class Viewer {
          try {
             result = new FileInputStream(bookFile);
          } catch (Exception e) {
-            System.err.println("Unable to open " + bookFile);
+            ErrorManager.error("Unable to open " + bookFile);
          }
       }
       if (result == null) {
@@ -322,7 +323,7 @@ public class Viewer {
       try {
          UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       } catch (Exception e) {
-         System.err.println("Unable to set native look and feel");
+         ErrorManager.error("Unable to set native look and feel");
       }
 
       final InputStream bookStream = getBookInputStream(args);

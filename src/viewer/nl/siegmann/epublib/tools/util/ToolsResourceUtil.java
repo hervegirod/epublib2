@@ -5,13 +5,14 @@ import java.io.Reader;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import nl.siegmann.epublib.domain.Resource;
+import nl.siegmann.epublib.epub.ErrorManager;
 import nl.siegmann.epublib.service.MediatypeService;
 
 /**
  * Various resource utility methods
  *
  * @author paul
- *
+ * @version 1.1
  */
 public class ToolsResourceUtil {
    public static String getTitle(Resource resource) {
@@ -61,7 +62,7 @@ public class ToolsResourceUtil {
             }
          }
       } catch (IOException e) {
-         e.printStackTrace();
+         ErrorManager.error(e);
       }
       resource.setTitle(title);
       return title;

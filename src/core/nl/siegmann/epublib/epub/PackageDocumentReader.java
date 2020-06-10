@@ -36,7 +36,7 @@ import org.xml.sax.SAXException;
  * Reads the opf package document as defined by namespace http://www.idpf.org/2007/opf
  *
  * @author paul
- *
+ * @version 1.1
  */
 public class PackageDocumentReader extends PackageDocumentBase {
    private static final String[] POSSIBLE_NCX_ITEM_IDS = new String[] { "toc", "ncx", "ncxtoc" };
@@ -85,7 +85,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
       Element manifestElement = DOMUtil.getFirstElementByTagNameNS(packageDocument.getDocumentElement(), NAMESPACE_OPF, OPFTags.manifest);
       Resources result = new Resources();
       if (manifestElement == null) {
-         System.err.println("Package document does not contain element " + OPFTags.manifest);
+         ErrorManager.error("Package document does not contain element " + OPFTags.manifest);
          return result;
       }
       NodeList itemElements = manifestElement.getElementsByTagNameNS(NAMESPACE_OPF, OPFTags.item);
@@ -96,12 +96,12 @@ public class PackageDocumentReader extends PackageDocumentBase {
          try {
             href = URLDecoder.decode(href, Constants.CHARACTER_ENCODING);
          } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            ErrorManager.error(e);
          }
          String mediaTypeName = DOMUtil.getAttribute(itemElement, NAMESPACE_OPF, OPFAttributes.media_type);
          Resource resource = resources.remove(href);
          if (resource == null) {
-            System.err.println("resource with href '" + href + "' not found");
+            ErrorManager.error("resource with href '" + href + "' not found");
             continue;
          }
          resource.setId(id);
@@ -140,12 +140,12 @@ public class PackageDocumentReader extends PackageDocumentBase {
          }
          Resource resource = resources.getByHref(StringUtil.substringBefore(resourceHref, Constants.FRAGMENT_SEPARATOR_CHAR));
          if (resource == null) {
-            System.err.println("Guide is referencing resource with href " + resourceHref + " which could not be found");
+            ErrorManager.error("Guide is referencing resource with href " + resourceHref + " which could not be found");
             continue;
          }
          String type = DOMUtil.getAttribute(referenceElement, NAMESPACE_OPF, OPFAttributes.type);
          if (StringUtil.isEmpty(type)) {
-            System.err.println("Guide is referencing resource with href " + resourceHref + " which is missing the 'type' attribute");
+            ErrorManager.error("Guide is referencing resource with href " + resourceHref + " which is missing the 'type' attribute");
             continue;
          }
          String title = DOMUtil.getAttribute(referenceElement, NAMESPACE_OPF, OPFAttributes.title);
@@ -197,7 +197,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
 
       Element spineElement = DOMUtil.getFirstElementByTagNameNS(packageDocument.getDocumentElement(), NAMESPACE_OPF, OPFTags.spine);
       if (spineElement == null) {
-         System.err.println("Element " + OPFTags.spine + " not found in package document, generating one automatically");
+         ErrorManager.error("Element " + OPFTags.spine + " not found in package document, generating one automatically");
          return generateSpineFromResources(resources);
       }
       Spine result = new Spine();
@@ -209,7 +209,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
          Element spineItem = (Element) spineNodes.item(i);
          String itemref = DOMUtil.getAttribute(spineItem, NAMESPACE_OPF, OPFAttributes.idref);
          if (StringUtil.isEmpty(itemref)) {
-            System.err.println("itemref with missing or empty idref"); // XXX
+            ErrorManager.error("itemref with missing or empty idref"); // XXX
             continue;
          }
          String id = idMapping.get(itemref);
@@ -218,7 +218,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
          }
          Resource resource = resources.getByIdOrHref(id);
          if (resource == null) {
-            System.err.println("resource with id \'" + id + "\' not found");
+            ErrorManager.error("resource with id \'" + id + "\' not found");
             continue;
          }
 
@@ -241,7 +241,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
     */
    private static Spine generateSpineFromResources(Resources resources) {
       Spine result = new Spine();
-      List<String> resourceHrefs = new ArrayList<String>();
+      List<String> resourceHrefs = new ArrayList<>();
       resourceHrefs.addAll(resources.getAllHrefs());
       Collections.sort(resourceHrefs, String.CASE_INSENSITIVE_ORDER);
       for (String resourceHref : resourceHrefs) {
@@ -292,7 +292,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
       }
 
       if (tocResource == null) {
-         System.err.println("Could not find table of contents resource. Tried resource with id '" + tocResourceId + "', " + Constants.DEFAULT_TOC_ID + ", " + Constants.DEFAULT_TOC_ID.toUpperCase() + " and any NCX resource.");
+         ErrorManager.error("Could not find table of contents resource. Tried resource with id '" + tocResourceId + "', " + Constants.DEFAULT_TOC_ID + ", " + Constants.DEFAULT_TOC_ID.toUpperCase() + " and any NCX resource.");
       }
       return tocResource;
    }
@@ -306,8 +306,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
     */
    // package
    static Set<String> findCoverHrefs(Document packageDocument) {
-
-      Set<String> result = new HashSet<String>();
+      Set<String> result = new HashSet<>();
 
       // try and find a meta tag with name = 'cover' and a non-blank id
       String coverResourceId = DOMUtil.getFindAttributeValue(packageDocument, NAMESPACE_OPF,
@@ -348,7 +347,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
       for (String coverHref : coverHrefs) {
          Resource resource = book.getResources().getByHref(coverHref);
          if (resource == null) {
-            System.err.println("Cover resource " + coverHref + " not found");
+            ErrorManager.error("Cover resource " + coverHref + " not found");
             continue;
          }
          if (resource.getMediaType() == MediatypeService.XHTML) {

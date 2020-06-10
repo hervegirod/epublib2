@@ -10,6 +10,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.domain.CSS3TableOfContents;
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.service.MediatypeService;
 import nl.siegmann.epublib.util.IOUtil;
@@ -19,10 +20,9 @@ import org.girod.epublib.xml.XmlSerializer;
  * Generates an epub file. Not thread-safe, single use object.
  *
  * @author paul
- *
+ * @version 1.1
  */
 public class EpubWriter {
-
    // package
    static final String EMPTY_NAMESPACE_PREFIX = "";
 
@@ -38,16 +38,19 @@ public class EpubWriter {
 
    public void write(Book book, OutputStream out) throws IOException {
       book = processBook(book);
-      ZipOutputStream resultStream = new ZipOutputStream(out);
-      writeMimeType(resultStream);
-      writeContainer(resultStream);
-      initTOCResource(book);
-      writeResources(book, resultStream);
-      writePackageDocument(book, resultStream);
-      resultStream.close();
+      try (ZipOutputStream resultStream = new ZipOutputStream(out)) {
+         writeMimeType(resultStream);
+         writeContainer(resultStream);
+         initTOCResource(book);
+         writeResources(book, resultStream);
+         writePackageDocument(book, resultStream);
+      }
    }
 
    private Book processBook(Book book) {
+      if (book.getCSS3TableOfContents() != null) {
+         book.getCSS3TableOfContents().finishResourceCreation();
+      }
       if (bookProcessor != null) {
          book = bookProcessor.processBook(book);
       }
@@ -64,8 +67,8 @@ public class EpubWriter {
          }
          book.getSpine().setTocResource(tocResource);
          book.getResources().add(tocResource);
-      } catch (Exception e) {
-         e.printStackTrace();
+      } catch (IOException | IllegalArgumentException | IllegalStateException e) {
+         ErrorManager.error(e);
       }
    }
 
@@ -82,18 +85,17 @@ public class EpubWriter {
     * @param resultStream
     * @throws IOException
     */
-   private void writeResource(Resource resource, ZipOutputStream resultStream)
-      throws IOException {
+   private void writeResource(Resource resource, ZipOutputStream resultStream) throws IOException {
       if (resource == null) {
          return;
       }
       try {
          resultStream.putNextEntry(new ZipEntry("OEBPS/" + resource.getHref()));
-         InputStream inputStream = resource.getInputStream();
-         IOUtil.copy(inputStream, resultStream);
-         inputStream.close();
-      } catch (Exception e) {
-         e.printStackTrace();
+         try (InputStream inputStream = resource.getInputStream()) {
+            IOUtil.copy(inputStream, resultStream);
+         }
+      } catch (IOException e) {
+         ErrorManager.error(e);
       }
    }
 
@@ -102,8 +104,6 @@ public class EpubWriter {
       XmlSerializer xmlSerializer = EpubProcessorSupport.createXmlSerializer(resultStream);
       PackageDocumentWriter.write(this, xmlSerializer, book);
       xmlSerializer.flush();
-//		String resultAsString = result.toString();
-//		resultStream.write(resultAsString.getBytes(Constants.ENCODING));
    }
 
    /**
