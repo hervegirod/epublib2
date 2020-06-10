@@ -9,11 +9,16 @@ of the original library (necessary when using the library on Android) have been 
 The structure of the project has too many changes compared to the original project, and the reason because it does not answer to the same kind of requirements than the original library, therefore I don't think that it would be valid for example to merge changes made in  this project to the original project.
 
 ## Changes compared to the original
+### 1.0
 * Removed dependency to jazzlib (useful only on Android platforms)
 * Removed dependency to xmlpull (is was difficult to configure because it needed a service provider)
 * Removed dependency to Apache commons.lang
 * Separate the viewer and tools library from the core library
 * creation of a Netbeans project (not using maven anymore) 
+
+### 1.1
+* Add an error listener to be able to control how errors and exceptions are managed
+* Add the Epub3 Table of contents
 
 ## License
 As stated on the http://www.siegmann.nl/epublib/license page of the original library, the license is LGPL.
