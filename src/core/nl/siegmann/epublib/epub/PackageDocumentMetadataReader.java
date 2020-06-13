@@ -23,7 +23,7 @@ import org.w3c.dom.NodeList;
  * In its own separate class because the PackageDocumentReader became a bit large and unwieldy.
  *
  * @author paul
- * @version 1.1
+ * @version 1.2
  */
 class PackageDocumentMetadataReader extends PackageDocumentBase {
 
@@ -59,10 +59,9 @@ class PackageDocumentMetadataReader extends PackageDocumentBase {
     * &lt;meta property="rendition:layout"&gt;pre-paginated&lt;/meta&gt;
     *
     * @param metadataElement
-    * @return
     */
    private static Map<QName, String> readOtherProperties(Element metadataElement) {
-      Map<QName, String> result = new HashMap<QName, String>();
+      Map<QName, String> result = new HashMap<>();
 
       NodeList metaTags = metadataElement.getElementsByTagName(OPFTags.meta);
       for (int i = 0; i < metaTags.getLength(); i++) {
@@ -86,7 +85,7 @@ class PackageDocumentMetadataReader extends PackageDocumentBase {
     * @return
     */
    private static Map<String, String> readMetaProperties(Element metadataElement) {
-      Map<String, String> result = new HashMap<String, String>();
+      Map<String, String> result = new HashMap<>();
 
       NodeList metaTags = metadataElement.getElementsByTagName(OPFTags.meta);
       for (int i = 0; i < metaTags.getLength(); i++) {
@@ -118,7 +117,7 @@ class PackageDocumentMetadataReader extends PackageDocumentBase {
 
    private static List<Author> readAuthors(String authorTag, Element metadataElement) {
       NodeList elements = metadataElement.getElementsByTagNameNS(NAMESPACE_DUBLIN_CORE, authorTag);
-      List<Author> result = new ArrayList<Author>(elements.getLength());
+      List<Author> result = new ArrayList<>(elements.getLength());
       for (int i = 0; i < elements.getLength(); i++) {
          Element authorElement = (Element) elements.item(i);
          Author author = createAuthor(authorElement);
@@ -132,7 +131,7 @@ class PackageDocumentMetadataReader extends PackageDocumentBase {
 
    private static List<Date> readDates(Element metadataElement) {
       NodeList elements = metadataElement.getElementsByTagNameNS(NAMESPACE_DUBLIN_CORE, DCTags.date);
-      List<Date> result = new ArrayList<Date>(elements.getLength());
+      List<Date> result = new ArrayList<>(elements.getLength());
       for (int i = 0; i < elements.getLength(); i++) {
          Element dateElement = (Element) elements.item(i);
          Date date;
@@ -167,10 +166,10 @@ class PackageDocumentMetadataReader extends PackageDocumentBase {
       NodeList identifierElements = metadataElement.getElementsByTagNameNS(NAMESPACE_DUBLIN_CORE, DCTags.identifier);
       if (identifierElements.getLength() == 0) {
          ErrorManager.error("Package does not contain element " + DCTags.identifier);
-         return new ArrayList<Identifier>();
+         return new ArrayList<>();
       }
       String bookIdId = getBookIdId(metadataElement.getOwnerDocument());
-      List<Identifier> result = new ArrayList<Identifier>(identifierElements.getLength());
+      List<Identifier> result = new ArrayList<>(identifierElements.getLength());
       for (int i = 0; i < identifierElements.getLength(); i++) {
          Element identifierElement = (Element) identifierElements.item(i);
          String schemeName = identifierElement.getAttributeNS(NAMESPACE_OPF, DCAttributes.scheme);

@@ -13,11 +13,14 @@ import java.util.List;
  * The only part of this that is heavily used is the cover page.
  *
  * @author paul
- * @version 1.1
+ * @version 1.2
  */
 public class Guide implements Serializable {
    private static final long serialVersionUID = -6256645339915751189L;
 
+   /**
+    * The default cover title.
+    */
    public static final String DEFAULT_COVER_TITLE = GuideReference.COVER;
 
    private List<GuideReference> references = new ArrayList<>();
@@ -89,7 +92,11 @@ public class Guide implements Serializable {
    }
 
    public void setCoverPage(Resource coverPage) {
-      GuideReference coverpageGuideReference = new GuideReference(coverPage, GuideReference.COVER, DEFAULT_COVER_TITLE);
+      setCoverPage(coverPage, DEFAULT_COVER_TITLE);
+   }
+
+   public void setCoverPage(Resource coverPage, String coverTitle) {
+      GuideReference coverpageGuideReference = new GuideReference(coverPage, GuideReference.COVER, coverTitle);
       setCoverReference(coverpageGuideReference);
    }
 
