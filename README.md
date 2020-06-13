@@ -20,6 +20,9 @@ The structure of the project has too many changes compared to the original proje
 * Add an error listener to be able to control how errors and exceptions are managed
 * Add the Epub3 Table of contents
 
+### 1.2
+* Allow to set the cover page with a specified title in the guide reference
+
 ## License
 As stated on the http://www.siegmann.nl/epublib/license page of the original library, the license is LGPL.
 
