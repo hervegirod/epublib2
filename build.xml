@@ -171,7 +171,7 @@
    
    <target name="-core" depends="init,compile,-pre-pre-jar,-pre-jar" > 
       <jar description="jar binary file" compress="true" 
-           jarfile="${dist.dir}/epublib.jar"> 
+           jarfile="${dist.dir}/epublib.jar"  manifest="${src.core.dir}/manifest.mf"> 
          <fileset defaultexcludes="yes" dir="${build.classes.dir}" > 
             <include name="org/**/*.class"/>       
             <include name="nl/siegmann/**/*.class"/>          
