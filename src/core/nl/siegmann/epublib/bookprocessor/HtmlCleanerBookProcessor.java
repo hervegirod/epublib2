@@ -48,7 +48,7 @@ public class HtmlCleanerBookProcessor extends HtmlBookProcessor implements BookP
       TagNode node = htmlCleaner.clean(resource.getReader());
 
       // post-process cleaned html
-      node.setAttribute("xmlns", Constants.NAMESPACE_XHTML);
+      node.addAttribute("xmlns", Constants.NAMESPACE_XHTML);
       node.setDocType(createXHTMLDoctypeToken());
 
       // write result to output

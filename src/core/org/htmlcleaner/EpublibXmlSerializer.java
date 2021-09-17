@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * @version 1.2
+ * @version 1.3
  */
 public class EpublibXmlSerializer extends SimpleXmlSerializer {
    private final String outputEncoding;
@@ -59,7 +59,7 @@ public class EpublibXmlSerializer extends SimpleXmlSerializer {
       writer.write("<" + tagName);
 
       if (isMetaContentTypeTag(tagNode)) {
-         tagNode.setAttribute("content", "text/html; charset=" + outputEncoding);
+         tagNode.addAttribute("content", "text/html; charset=" + outputEncoding);
       }
 
       // write attributes

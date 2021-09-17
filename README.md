@@ -23,6 +23,9 @@ The structure of the project has too many changes compared to the original proje
 ### 1.2
 * Allow to set the cover page with a specified title in the guide reference
 
+### 1.3
+* Use HtmlCleaner 2.24
+
 ## License
 As stated on the http://www.siegmann.nl/epublib/license page of the original library, the license is LGPL.
 
