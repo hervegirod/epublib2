@@ -3,4 +3,4 @@ Main-Class: nl.siegmann.epublib.viewer.Viewer
 Class-Path: epublib.jar \
             lib/commons-io-2.7.jar \
             lib/commons-vfs-1.0.jar \
-            lib/htmlcleaner-2.2.jar
+            lib/htmlcleaner-2.24.jar
